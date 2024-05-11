@@ -29,7 +29,7 @@ main().then((res)=>{
     console.log('Connected succesfully');
 }).catch((err)=>{
     console.log(err);
-})
+});
 
 
 app.get('/',(req,res)=>{
@@ -39,7 +39,7 @@ app.get('/',(req,res)=>{
 // index route
 
 app.get('/chats',asyncWrap(async(req,res,next)=>{
-    let chats = await chat.find();           // to print all the chats on web-page
+    let chats = await Chat.find();           // to print all the chats on web-page
     res.render('index.ejs',{chats});
 }));
 
@@ -74,14 +74,14 @@ app.get('/chats/:id/edit',asyncWrap(async(req,res,next)=>{
 }));
 
 // update route
-app.put('/chats/:id',asyncWrap (async (req,res,next)=>{
+app.put('/chats/:id',asyncWrap(async (req,res,next)=>{
     let {id} = req.params;
     let {mssege : newmsg} = req.body;
     let updatedchat = await Chat.findByIdAndUpdate(id,{mssege: newmsg},{runValidators : true , new : true});
     console.log(updatedchat);
     res.redirect("/chats");
-   
 }));
+
 
 function asyncWrap(fn){
     return function(req,res,next){        
@@ -99,6 +99,7 @@ app.delete("/chats/:id",asyncWrap(async (req,res,next)=>{
     
 }));
 
+
 // show route
 app.get('/chats/:id', asyncWrap(async (req,res,next)=>{
     let{id} = req.params;
@@ -109,17 +110,25 @@ app.get('/chats/:id', asyncWrap(async (req,res,next)=>{
     res.render('edit.ejs',{chatf});
 }));
 
-// error ka name print kare ye gha
+
+// To Print Error Name
 app.use((err,req,res,next)=>{
     console.log(err.name);
+    if(err.name ==='CastError'){
+        console.log("Cast Error ! Please follow the rule...");
+    }
     next(err);
 });
 
-//custom error handlor middlewares
+//custom error handling middlewares 
 app.use((err,req,res,next)=>{
     let{status = 500,message = "Access Denied"} = err;
     res.status(status).send(message);
 });
+
+
+
+
 
 
 
