@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Route</title>
+</head>
+<body>
+    <h3>Edit your chat :<%= chatf._id %></h3>
+    <p>This chat was sent from <i><b><%= chatf.from %></b></i> to <i><b><%= chatf.to %></b></i></p>
+    <form action="/chats/<%= chatf._id %>?_method=put" method="post">
+    <textarea name="mssege" ><%= chatf.mssege %></textarea>
+    <br>
+    <br>
+    <button>Submit</button>
+</form>
+</body>
+</html>
